@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let velocity = { x: 0, y: 0 };
     const gravity = 0.1;
-    const maxSpeed = 5; // Adjust the max speed as needed
+    const maxSpeed = 2; // Adjust the max speed as needed
+    const mouseForceFactor = 0.01;
 
     balloon.addEventListener('mouseenter', applyMouseForce);
 
@@ -16,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const deltaY = mouseY - balloon.getBoundingClientRect().top;
 
         // Adjust the velocity based on the mouse force
-        velocity.x += deltaX * 0.01;
-        velocity.y += deltaY * 0.01;
+        velocity.x += deltaX * mouseForceFactor;
+        velocity.y += deltaY * mouseForceFactor;
     }
 
     function updateBalloon() {
