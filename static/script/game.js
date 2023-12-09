@@ -1,57 +1,77 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', () => {
     const balloon = document.getElementById('balloon');
-
-    let velocity = { x: 0, y: 0 };
-    const gravity = 0.1;
-    const maxSpeed = 2; // Adjust the max speed as needed
-    const mouseForceFactor = 0.01;
-
-    balloon.addEventListener('mouseenter', applyMouseForce);
-
-    function applyMouseForce(e) {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        // Calculate the distance and direction between the mouse and the balloon
-        const deltaX = mouseX - balloon.getBoundingClientRect().left;
-        const deltaY = mouseY - balloon.getBoundingClientRect().top;
-
-        // Adjust the velocity based on the mouse force
-        velocity.x += deltaX * mouseForceFactor;
-        velocity.y += deltaY * mouseForceFactor;
+    let velocityX = 0;
+    let velocityY = 0;
+    const friction = 0.95;
+    const pushStrength = 20;
+    const gravity = 0.18;
+  
+    let mouseX = 0;
+    let mouseY = 0;
+    let lastCollisionTime = 0;
+    const collisionCooldown = 500; // Cooldown time in milliseconds
+  
+    function startBalloonPosition() {
+      const startX = window.innerWidth / 2 - balloon.clientWidth / 2;
+      const startY = window.innerHeight / 2 - balloon.clientHeight / 2;
+      setBalloonPosition(startX, startY);
     }
-
-    function updateBalloon() {
-        // Apply gravity
-        velocity.y += gravity;
-
-        // Limit the speed
-        const speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
-        if (speed > maxSpeed) {
-            const ratio = maxSpeed / speed;
-            velocity.x *= ratio;
-            velocity.y *= ratio;
-        }
-
-        // Update position based on velocity
-        const balloonRect = balloon.getBoundingClientRect();
-        const newX = balloonRect.left + velocity.x;
-        const newY = balloonRect.top + velocity.y;
-
-        balloon.style.left = `${newX}px`;
-        balloon.style.top = `${newY}px`;
-
-        // Bounce off the walls
-        if (newX < 0 || newX + balloonRect.width > window.innerWidth) {
-            velocity.x *= -1;
-        }
-        if (newY < 0 || newY + balloonRect.height > window.innerHeight) {
-            velocity.y *= -1;
-        }
-
-        requestAnimationFrame(updateBalloon);
+  
+    function setBalloonPosition(x, y) {
+      balloon.style.left = x + 'px';
+      balloon.style.top = y + 'px';
     }
-
-    // Start the animation loop
-    updateBalloon();
-});
+  
+    function checkCollision() {
+      let now = Date.now();
+      if (now - lastCollisionTime < collisionCooldown) return;
+  
+      let rect = balloon.getBoundingClientRect();
+      let balloonCenterX = rect.left + rect.width / 2;
+      let balloonCenterY = rect.top + rect.height / 2;
+  
+      if (distance(mouseX, mouseY, balloonCenterX, balloonCenterY) < rect.width / 2) {
+        let angle = Math.atan2(balloonCenterY - mouseY, balloonCenterX - mouseX);
+        velocityX += pushStrength * Math.cos(angle);
+        velocityY += pushStrength * Math.sin(angle);
+        lastCollisionTime = now;
+      }
+    }
+  
+    function update() {
+      velocityX *= friction;
+      velocityY *= friction;
+      velocityY += gravity;
+  
+      checkCollision();
+  
+      let rect = balloon.getBoundingClientRect();
+      let newX = rect.left + velocityX;
+      let newY = rect.top + velocityY;
+  
+      if (newX + rect.width > window.innerWidth || newX < 0) {
+        velocityX *= -1;
+        newX = newX < 0 ? 0 : window.innerWidth - rect.width;
+      }
+  
+      if (newY > window.innerHeight) {
+        window.location.href = 'lose.html';
+        return;
+      }
+  
+      setBalloonPosition(newX, newY);
+      requestAnimationFrame(update);
+    }
+  
+    function distance(x1, y1, x2, y2) {
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+  
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+  
+    startBalloonPosition();
+    update();
+});  
