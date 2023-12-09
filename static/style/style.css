@@ -25,7 +25,8 @@ body {
 
 #balloon {
     position: absolute;
-    width: 200px;
+    width: 150px;
+    height: auto;
     user-select: none;
 }
 
