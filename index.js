@@ -14,6 +14,10 @@ app.get('/game', (req, res) => {
   res.sendFile(resolve(__dirname, 'pages/game.html'));
 });
 
+app.get('/lose', (req, res) => {
+  res.sendFile(resolve(__dirname, 'pages/lose.html'));
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
