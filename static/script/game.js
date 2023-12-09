@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const balloon = document.getElementById('balloon');
-  let velocityX = 0;
-  let velocityY = 0;
   const friction = 0.95;
   const pushStrength = 20;
   const gravity = 0.18;
-
+  const collisionCooldown = 500;
+  let velocityX = 0;
+  let velocityY = 0;
   let mouseX = 0;
   let mouseY = 0;
   let lastCollisionTime = 0;
-  const collisionCooldown = 500; // Cooldown time in milliseconds
 
   function startBalloonPosition() {
     const startX = window.innerWidth / 2 - balloon.clientWidth / 2;
