@@ -1,7 +1,1 @@
 @import url('./style.css');
-
-#balloon {
-    position: absolute;
-    width: 100px;
-    user-select: none;
-}

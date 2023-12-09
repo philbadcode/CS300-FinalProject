@@ -8,9 +8,13 @@
   </head>
   <body>
     <img src="https://cdnb.artstation.com/p/assets/images/images/031/136/133/large/gabriel-doco-cenarioquarto.jpg?1602702882" id="background-image" />
+    <div id="timer">00:00</div>
     <div id="main-menu">
       <h1 class="game-title">You Lost!</h1>
       <a href="/" class="start-button">Main Menu</a>
     </div>
+    <script>
+      document.getElementById('timer').textContent = localStorage.getItem('elapsedTime');
+    </script>
   </body>
 </html>

@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (newY > window.innerHeight) {
+      localStorage.setItem('elapsedTime', document.getElementById('timer').textContent);
       window.location.href = '/lose';
       return;
     }
@@ -66,11 +67,31 @@ document.addEventListener('DOMContentLoaded', () => {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   }
 
+  function startTimer() {
+    let startTime = Date.now();
+    setInterval(() => {
+      let elapsedTime = Date.now() - startTime;
+      document.getElementById('timer').textContent = formatTime(elapsedTime);
+    }, 1000);
+  }
+  
+  function formatTime(milliseconds) {
+    let seconds = Math.floor(milliseconds / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    return `${pad(minutes)}:${pad(seconds)}`;
+  }
+  
+  function pad(number) {
+    return number < 10 ? '0' + number : number;
+  } 
+
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
   });
 
+  startTimer(); 
   startBalloonPosition();
   update();
 });

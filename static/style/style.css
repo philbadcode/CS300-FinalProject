@@ -22,6 +22,25 @@ body {
     text-align: center;
     color: white;
 }
+
+#balloon {
+    position: absolute;
+    width: 200px;
+    user-select: none;
+}
+
+#timer {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-shadow: 1px 1px 2px black;
+}
   
 .game-title {
     font-size: 3em;
