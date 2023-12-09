@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startBalloonPosition() {
     const startX = window.innerWidth / 2 - balloon.clientWidth / 2;
-    const startY = window.innerHeight / 2 - balloon.clientHeight / 2;
+    const startY = window.innerHeight / 4 - balloon.clientHeight / 2;
     setBalloonPosition(startX, startY);
   }
 
